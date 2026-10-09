@@ -2,14 +2,14 @@
  * Simple protype, this circuit will flash LEDs at three different frequencies, as a precursor to eventually creating a blood oximeter accross 3 wavelengths of light using FDM
  */
 
-// Include Particle Device OS APIs
+// whatever
 #include "Particle.h"
-
-// Let Device OS manage the connection to the Particle Cloud
 SYSTEM_MODE(AUTOMATIC);
-
-// Run the application and system concurrently in separate threads
 SYSTEM_THREAD(ENABLED);
+
+#define RED_LED D8
+#define GREEN_LED D7
+#define BLUE_LED A0
 
 // Show system, cloud connectivity, and application logs over USB
 // View logs with CLI using 'particle serial monitor --follow'
