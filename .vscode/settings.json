@@ -5,5 +5,7 @@
         "*.ino": "cpp"
     },
     "particle.targetPlatform": "argon",
-    "particle.firmwareVersion": "6.4.1"
+    "particle.firmwareVersion": "6.4.1",
+    "stm32-for-vscode.openOCDPath": false,
+    "stm32-for-vscode.armToolchainPath": false
 }
