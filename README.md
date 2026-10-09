@@ -1,9 +1,11 @@
 # prototype1-firmware
-### Contributors: Malik,Aiden,Monia,Aarmin
+### Contributors: Malik, Aiden, Monia, Aarmin
 
-This firmware project was created using [Particle Developer Tools](https://www.particle.io/developer-tools/) and is compatible with all [Particle Devices](https://www.particle.io/devices/).
+This firmware project was created using [Particle Developer Tools](https://www.particle.io/developer-tools/)
 
-Feel free to replace this README.md file with your own content, or keep it for reference.
+
+
+*This circuit will flash LEDs at three different frequencies, as a precursor to eventually creating a blood oximeter accross 3 wavelengths of light using FDM*
 
 ## Table of Contents
 - [Introduction](#introduction)

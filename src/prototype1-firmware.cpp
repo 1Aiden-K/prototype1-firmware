@@ -1,5 +1,5 @@
 /* 
- * Simple protype, this circuit will flash LEDs at three different frequencies, as a precursor to eventually creating a blood oximeter accross 3 wavelengths of light 
+ * Simple protype, this circuit will flash LEDs at three different frequencies, as a precursor to eventually creating a blood oximeter accross 3 wavelengths of light using FDM
  */
 
 // Include Particle Device OS APIs
