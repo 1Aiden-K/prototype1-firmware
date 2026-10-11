@@ -1,9 +1,14 @@
-/* 
- * Simple protype, this circuit will flash LEDs at three different frequencies, as a precursor to eventually creating a blood oximeter accross 3 wavelengths of light using FDM
+
+/*
+ * Three LED Frequency Modulation Prototype
+ *
+ * Flashes three LEDs at different frequencies.
+ * Intended as a precursor to a 3-wavelength
+ * blood oximeter using Frequency Division Multiplexing (FDM).
  */
 
-// whatever
 #include "Particle.h"
+
 SYSTEM_MODE(AUTOMATIC);
 SYSTEM_THREAD(ENABLED);
 
@@ -11,21 +16,60 @@ SYSTEM_THREAD(ENABLED);
 #define GREEN_LED D7
 #define BLUE_LED A0
 
-// Show system, cloud connectivity, and application logs over USB
-// View logs with CLI using 'particle serial monitor --follow'
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
-// setup() runs once, when the device is first turned on
+// LED frequencies in Hz
+const float RED_FREQ = 1.0;
+const float GREEN_FREQ = 2.0;
+const float BLUE_FREQ = 5.0;
+
+// Half-periods in milliseconds (50% duty cycle)
+const unsigned long RED_INTERVAL = 500;
+const unsigned long GREEN_INTERVAL = 250;
+const unsigned long BLUE_INTERVAL = 100;
+
+// Track previous toggle times
+unsigned long redPrevious = 0;
+unsigned long greenPrevious = 0;
+unsigned long bluePrevious = 0;
+
+// Track LED states
+bool redState = LOW;
+bool greenState = LOW;
+bool blueState = LOW;
+
 void setup() {
-  // Put initialization like pinMode and begin functions here
+    pinMode(RED_LED, OUTPUT);
+    pinMode(GREEN_LED, OUTPUT);
+    pinMode(BLUE_LED, OUTPUT);
+
+    // Start with all LEDs off
+    digitalWrite(RED_LED, LOW);
+    digitalWrite(GREEN_LED, LOW);
+    digitalWrite(BLUE_LED, LOW);
 }
 
-// loop() runs over and over again, as quickly as it can execute.
 void loop() {
-  // The core of your code will likely live here.
+    unsigned long currentTime = millis();
 
-  // Example: Publish event to cloud every 10 seconds. Uncomment the next 3 lines to try it!
-  // Log.info("Sending Hello World to the cloud!");
-  // Particle.publish("Hello world!");
-  // delay( 10 * 1000 ); // milliseconds and blocking - see docs for more info!
+    // RED LED - 1 Hz
+    if (currentTime - redPrevious >= RED_INTERVAL) {
+        redPrevious = currentTime;
+        redState = !redState;
+        digitalWrite(RED_LED, redState);
+    }
+
+    // GREEN LED - 2 Hz
+    if (currentTime - greenPrevious >= GREEN_INTERVAL) {
+        greenPrevious = currentTime;
+        greenState = !greenState;
+        digitalWrite(GREEN_LED, greenState);
+    }
+
+    // BLUE LED - 5 Hz
+    if (currentTime - bluePrevious >= BLUE_INTERVAL) {
+        bluePrevious = currentTime;
+        blueState = !blueState;
+        digitalWrite(BLUE_LED, blueState);
+    }
 }
