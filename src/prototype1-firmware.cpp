@@ -1,10 +1,12 @@
 
 /*
- * Three LED Frequency Modulation Prototype
+ * Three-Wavelength Oximeter Prototype
  *
- * Flashes three LEDs at different frequencies.
- * Intended as a precursor to a 3-wavelength
- * blood oximeter using Frequency Division Multiplexing (FDM).
+ * Uses hardware PWM to flash three LEDs at
+ * independent frequencies for Frequency
+ * Division Multiplexing (FDM).
+ *
+ * Target: Particle Argon / Boron
  */
 
 #include "Particle.h"
@@ -12,64 +14,40 @@
 SYSTEM_MODE(AUTOMATIC);
 SYSTEM_THREAD(ENABLED);
 
-#define RED_LED D8
-#define GREEN_LED D7
-#define BLUE_LED A0
+// LED pins (three different PWM timer groups)
+#define RED_LED   D8
+#define GREEN_LED A4
+#define BLUE_LED  A0
+
+// LED modulation frequencies (Hz)
+const uint32_t RED_FREQ   = 7;
+const uint32_t GREEN_FREQ = 11;
+const uint32_t BLUE_FREQ  = 17;
+
+// 50% duty cycle (8-bit PWM)
+const uint8_t DUTY_CYCLE = 128;
 
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
-// LED frequencies in Hz
-const float RED_FREQ = 1.0;
-const float GREEN_FREQ = 2.0;
-const float BLUE_FREQ = 5.0;
-
-// Half-periods in milliseconds (50% duty cycle)
-const unsigned long RED_INTERVAL = 500;
-const unsigned long GREEN_INTERVAL = 250;
-const unsigned long BLUE_INTERVAL = 100;
-
-// Track previous toggle times
-unsigned long redPrevious = 0;
-unsigned long greenPrevious = 0;
-unsigned long bluePrevious = 0;
-
-// Track LED states
-bool redState = LOW;
-bool greenState = LOW;
-bool blueState = LOW;
-
 void setup() {
+
+    // Configure LED pins as outputs
     pinMode(RED_LED, OUTPUT);
     pinMode(GREEN_LED, OUTPUT);
     pinMode(BLUE_LED, OUTPUT);
 
-    // Start with all LEDs off
-    digitalWrite(RED_LED, LOW);
-    digitalWrite(GREEN_LED, LOW);
-    digitalWrite(BLUE_LED, LOW);
+    // Generate independent PWM signals
+    analogWrite(RED_LED, DUTY_CYCLE, RED_FREQ);
+    analogWrite(GREEN_LED, DUTY_CYCLE, GREEN_FREQ);
+    analogWrite(BLUE_LED, DUTY_CYCLE, BLUE_FREQ);
+
+    Log.info("Three LED PWM signals started");
+    Log.info("Red: %lu Hz", (unsigned long)RED_FREQ);
+    Log.info("Green: %lu Hz", (unsigned long)GREEN_FREQ);
+    Log.info("Blue: %lu Hz", (unsigned long)BLUE_FREQ);
 }
 
 void loop() {
-    unsigned long currentTime = millis();
-
-    // RED LED - 1 Hz
-    if (currentTime - redPrevious >= RED_INTERVAL) {
-        redPrevious = currentTime;
-        redState = !redState;
-        digitalWrite(RED_LED, redState);
-    }
-
-    // GREEN LED - 2 Hz
-    if (currentTime - greenPrevious >= GREEN_INTERVAL) {
-        greenPrevious = currentTime;
-        greenState = !greenState;
-        digitalWrite(GREEN_LED, greenState);
-    }
-
-    // BLUE LED - 5 Hz
-    if (currentTime - bluePrevious >= BLUE_INTERVAL) {
-        bluePrevious = currentTime;
-        blueState = !blueState;
-        digitalWrite(BLUE_LED, blueState);
-    }
+    // Hardware PWM runs automatically.
+    // Future photodiode sampling code goes here.
 }
