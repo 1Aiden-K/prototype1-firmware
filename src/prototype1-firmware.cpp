@@ -11,7 +11,7 @@
 
 #include "Particle.h"
 
-SYSTEM_MODE(AUTOMATIC);
+SYSTEM_MODE(MANUAL);
 SYSTEM_THREAD(ENABLED);
 
 // LED pins (three different PWM timer groups)
@@ -30,7 +30,6 @@ const uint8_t DUTY_CYCLE = 128;
 SerialLogHandler logHandler(LOG_LEVEL_INFO);
 
 void setup() {
-
     // Configure LED pins as outputs
     pinMode(RED_LED, OUTPUT);
     pinMode(GREEN_LED, OUTPUT);
